@@ -71,5 +71,5 @@ then
 	echo "[chromeinstall] to install to Chrome partition"
 	echo "[help] to display this screen"
 else
-	echo "No valid flags specified. Try help"
+	echo "No valid flags specified. Try uboot-set help"
 fi
