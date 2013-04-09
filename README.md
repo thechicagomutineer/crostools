@@ -1,20 +1,31 @@
 README file for uboot-set
 Version 1.1-update6
 April 9 2013
---
-1 Introduction
-1.1 How To Install (Ubuntu)
-1.2 How To Install (Chrome/Chromium)
-2 Functions
-2.1 From Command Line
-2.2 Automatic Update
-2.3 Invoke at Boot
-3 License Information
-4 Detailed Release Information
---
-1 Introduction
-1.1 How to Install under Ubuntu:
 ==
+TABLE OF CONTENTS
+==
+1 Introduction
+
+1.1 How To Install (Ubuntu)
+
+1.2 How To Install (Chrome/Chromium)
+
+2 Functions
+
+2.1 From Command Line
+
+2.2 Automatic Update
+
+2.3 Invoke at Boot
+
+3 License Information
+
+4 Detailed Release Information
+
+1 Introduction
+==
+1.1 How to Install under Ubuntu:
+--
 To install in Ubuntu, the recommended method is to clone the repository, and use the builtin
 "uboot-set install" function. To do this, run the following from a root terminal.
 
@@ -24,7 +35,7 @@ chmod +x ./uboot-set-dev.sh
 ./uboot-set-dev.sh install
 
 and allow the script to finish installation. 
---
+
 1.2 Install on Chrome:
 --
 This requires Developer Mode to be enabled, as well as full read/write access to your Chrome partition.
