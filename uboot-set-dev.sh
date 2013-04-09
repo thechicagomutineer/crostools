@@ -1,4 +1,4 @@
-#!/bin/sh -e
+!/bin/sh -e
 # uboot-set Bootloader Configuration Utility
 # Version 1.67 for ChromeOS Devices
 # ===================================
@@ -6,12 +6,6 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Soft"ware Foundation, either version 3 of the License, or
 # (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -48,7 +42,7 @@ then
 	echo "INTERNAL RELEASE ONLY"
 	echo "========================================"
     sudo cgpt add -i 6 -P 5 -S 1 /dev/sda
-    echo "Next time you reboot, you will boot into Ubuntu"    
+    echo "Next time you reboot, you will boot into Ubuntu"
 
 elif [ "$1" = $CHROME ]	
 then
@@ -69,13 +63,13 @@ then
     echo "uboot-set is a utility to set bootloader flags on Chrome OS devices"
     echo "Usage: uboot-set [flag]"
     echo "Flags to set bootloader:"
-	echo "chrome to boot to ChromeOS"
-	echo "ubuntu to boot to Ubuntu"
+	echo "[chrome] to boot to ChromeOS"
+	echo "[ubuntu] to boot to Ubuntu"
+	echo "[reboot] to restart machine with selected settings"
 	echo "Internal Operations"
-	echo "install to install new binary/update binary"
-	echo "chromeinstall to install to Chrome partition"
-	echo "help to display this screen"
+	echo "[install] to install new binary/update binary"
+	echo "[chromeinstall] to install to Chrome partition"
+	echo "[help] to display this screen"
 else
 	echo "No valid flags specified. Try help"
 fi
-
