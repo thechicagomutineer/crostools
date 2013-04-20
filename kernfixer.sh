@@ -1,3 +1,88 @@
+# fw_type will always be developer for Mario.
+# Alex and ZGB need the developer BIOS installed though.
+fw_type="`crossystem mainfw_type`"
+if [ ! "$fw_type" = "developer" ]
+  then
+    echo -e "\nYou're Chromebook is not running a developer BIOS!"
+    echo -e "You need to run:"
+    echo -e ""
+    echo -e "sudo chromeos-firmwareupdate --mode=todev"
+    echo -e ""
+    echo -e "and then re-run this script."
+    return
+  else
+    echo -e "\nOh good. You're running a developer BIOS...\n"
+fi
+
+# hwid lets us know if this is a Mario (Cr-48), Alex (Samsung Series 5), ZGB (Acer), etc
+hwid="`crossystem hwid`"
+
+echo -e "Chome OS model is: $hwid\n"
+
+chromebook_arch="`uname -m`"
+if [ ! "$chromebook_arch" = "x86_64" ]
+then
+  echo -e "This version of Chrome OS isn't 64-bit. We'll use an unofficial Chromium OS kernel to get around this...\n"
+else
+  echo -e "and you're running a 64-bit version of Chrome OS! That's just dandy!\n"
+fi
+
+read -p "Press [Enter] to continue..."
+
+powerd_status="`initctl status powerd`"
+if [ ! "$powerd_status" = "powerd stop/waiting" ]
+then
+  echo -e "Stopping powerd to keep display from timing out..."
+  initctl stop powerd
+fi
+
+powerm_status="`initctl status powerm`"
+if [ ! "$powerm_status" = "powerm stop/waiting" ]
+then
+  echo -e "Stopping powerm to keep display from timing out..."
+  initctl stop powerm
+fi
+
+setterm -blank 0
+
+if [ "$1" != "" ]; then
+  target_disk=$1
+  echo "Got ${target_disk} as target drive"
+  echo ""
+  echo "WARNING! All data on this device will be wiped out! Continue at your own risk!"
+  echo ""
+  read -p "Press [Enter] to install ChrUbuntu on ${target_disk} or CTRL+C to quit"
+fi
+
+if [ ! -d /mnt/stateful_partition/ubuntu ]
+then
+  mkdir /mnt/stateful_partition/ubuntu
+fi
+
+cd /mnt/stateful_partition/ubuntu
+
+if [[ "${target_disk}" =~ "mmcblk" ]]
+then
+  target_rootfs="${target_disk}p7"
+  target_kern="${target_disk}p6"
+else
+  target_rootfs="${target_disk}7"
+  target_kern="${target_disk}6"
+fi
+
+echo "Target Kernel Partition: $target_kern  Target Root FS: ${target_rootfs}"
+
+#Mount Ubuntu rootfs and copy cgpt + modules over
+echo "Copying modules, firmware and binaries to ${target_rootfs} for ChrUbuntu"
+if [ ! -d /tmp/urfs ]
+then
+  mkdir /tmp/urfs
+fi
+mount -t ext4 ${target_rootfs} /tmp/urfs
+cp /usr/bin/cgpt /tmp/urfs/usr/bin/
+chmod a+rx /tmp/urfs/usr/bin/cgpt
+
+echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0" > kernel-config
 if [ "$chromebook_arch" = "x86_64" ]  # We'll use the official Chrome OS kernel if it's x64
 then
   cp -ar /lib/modules/* /tmp/urfs/lib/modules/
@@ -39,5 +124,5 @@ umount /tmp/urfs
 
 dd if=$use_kernfs of=${target_kern}
 
-fi
-
+#Set Ubuntu partition as top priority for next boot
+cgpt add -i 6 -P 5 -T 1 ${target_disk}
