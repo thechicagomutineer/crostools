@@ -45,44 +45,17 @@ fi
 
 setterm -blank 0
 
-if [ "$1" != "" ]; then
-  target_disk=$1
-  echo "Got ${target_disk} as target drive"
-  echo ""
-  echo "WARNING! All data on this device will be wiped out! Continue at your own risk!"
-  echo ""
-  read -p "Press [Enter] to install ChrUbuntu on ${target_disk} or CTRL+C to quit"
-fi
-
-if [ ! -d /mnt/stateful_partition/ubuntu ]
-then
-  mkdir /mnt/stateful_partition/ubuntu
-fi
-
-cd /mnt/stateful_partition/ubuntu
-
-if [[ "${target_disk}" =~ "mmcblk" ]]
-then
-  target_rootfs="${target_disk}p7"
-  target_kern="${target_disk}p6"
-else
-  target_rootfs="${target_disk}7"
-  target_kern="${target_disk}6"
-fi
-
-echo "Target Kernel Partition: $target_kern  Target Root FS: ${target_rootfs}"
-
 #Mount Ubuntu rootfs and copy cgpt + modules over
 echo "Copying modules, firmware and binaries to ${target_rootfs} for ChrUbuntu"
 if [ ! -d /tmp/urfs ]
 then
   mkdir /tmp/urfs
 fi
-mount -t ext4 ${target_rootfs} /tmp/urfs
+mount -t ext4 /dev/sda7 /tmp/urfs
 cp /usr/bin/cgpt /tmp/urfs/usr/bin/
 chmod a+rx /tmp/urfs/usr/bin/cgpt
 
-echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0" > kernel-config
+echo "console=tty1 debug verbose root=/dev/sda7 rootwait rw lsm.module_locking=0" > kernel-config
 if [ "$chromebook_arch" = "x86_64" ]  # We'll use the official Chrome OS kernel if it's x64
 then
   cp -ar /lib/modules/* /tmp/urfs/lib/modules/
