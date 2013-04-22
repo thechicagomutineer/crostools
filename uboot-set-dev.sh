@@ -1,4 +1,4 @@
-!/bin/bash -e
+# !/bin/bash -e
 # uboot-set Bootloader Configuration Utility
 # Version 1.2 for SDA based devices
 # ===================================
