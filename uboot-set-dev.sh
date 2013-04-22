@@ -26,7 +26,7 @@ then
 	sudo rm /usr/bin/uboot-set
 	sudo rm /usr/bin/uboot-set.bkp
 	echo "Installing..."
-	sudo cp ./uboot-set.sh /usr/bin/uboot-set
+	sudo cp ./uboot-set-dev.sh /usr/bin/uboot-set
 	echo "Install Complete!"
 
 elif [ "$1" = $CROSINST ]
