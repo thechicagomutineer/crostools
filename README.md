@@ -14,8 +14,6 @@ TABLE OF CONTENTS
 
 2.1 From Command Line
 
-2.2 Automatic Update
-
 2.3 Invoke at Boot
 
 3 License Information
@@ -56,3 +54,9 @@ and allow the binary to install itself.
 Uboot-set contains an array of commands for administering your Chrome OS device.
 Type chrome to set boot to ChromeOS partition on next boot, ditto for Ubuntu.
 Install installs the binary to /usr/bin, update does the same while wiping the old version.
+The update process looks for a binary, backs it up to uboot-set.bkp, then writes over
+with the new version.
+
+2.3 Invoke At Boot
+--
+Certain systems have issues retaining U-Boot configuration settings. While no pattern can be ascertained, 
