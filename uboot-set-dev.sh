@@ -18,6 +18,7 @@ UBUNTU="ubuntu"
 INSTALL="install"
 CROSINST="chromeinstall"
 HELP="help"
+DEV="developer"
 
 
 
@@ -25,7 +26,7 @@ if [ "$1" = $INSTALL ]
 then
 	echo "U-Boot Configuration Utility 1.2"
 	echo "INTERNAL RELEASE ONLY"
-	echo "========================================"
+	echo "========================================="
 	echo "Clearing old install"
 	if [ -f /usr/bin/uboot-set ];
 	then
@@ -77,6 +78,13 @@ then
 	echo "[install] to install new binary/update binary"
 	echo "[chromeinstall] to install to Chrome partition  -FOR FUTURE USE!"
 	echo "[help] to display this screen"
+        echo "[developer] to print developer build information"
+elif [ "$1" = $DEV ]
+then 
+        echo "Unique Build ID: Q8YTAHP98"
+        echo "Unique Build Phrase: Say my name, mister fahrenheit!"
+        echo "Version: 1.21 Date Of Release: 31.3.2014"
+        echo "NOT WARRANTED FOR PUBLIC USE"
 else
 	echo "No valid flags specified. Try uboot-set help"
 fi
