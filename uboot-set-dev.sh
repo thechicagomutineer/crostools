@@ -21,6 +21,13 @@ CROSINST="chromeinstall"
 HELP="help"
 DEV="developer"
 FUCKING_SAMSUNG_SHIT="sam"
+RAMTEST="ramtest"
+ROOTUSER_NAME=root
+
+MOUNTPT=/mnt/ramdisk           # Create with mkdir /mnt/ramdisk.
+SIZE=2000                      # 2K blocks (change as appropriate)
+BLOCKSIZE=1024                 # 1K (1024 byte) block size
+DEVICE=/dev/ram0               # First ram device
 
 #MOVE HEADER BULLSHIT HERE TO AVOID MULTIPRINT KLUDGE
 echo "U-Boot Configuration Utility 1.22-DEV"
@@ -36,33 +43,31 @@ then
 		rm -rf /usr/bin/uboot-set
 	echo "Installing..."
 	sudo cp ./uboot-set-dev.sh /usr/bin/uboot-set
-
 	echo "Install Complete!"
+	
 elif [ "$1" = $CROSINST ]
 then
-	echo "U-Boot Configuration Utility 1.2"
-	echo "INTERNAL RELEASE ONLY"
-	echo "========================================"
 	echo "This feature has not yet been implemented."
 	echo "Please view the help file for more information"
 	
 elif [ "$1" = $UBUNTU ]
 then
 	if [ -d /etc/fssind ];
-	then
-		sudo cgpt add <SAMSUNG SHIT PART>
-	elif
-    sudo cgpt add -i 6 -P 5 -S 1 /dev/sda
+	then 
+		sudo cgpt add -i 6 -P 5 -S 1 /dev/mmcblk0
+	else
+	sudo cgpt add -i 6 -P 5 -S 1 /dev/sda
     echo "Next time you reboot, you will boot into Ubuntu"
-
+	fi
+	
 elif [ "$1" = $CHROME ]	
 then
 	if [ -d /etc/fssind ];
-	then
-		sudo cgpt add <SAMSUNG SHIT PART>
-	elif
+		then sudo cgpt add -i 6 -P 0 -S 1 /dev/mmcblk0
+	else
 	sudo cgpt add -i 6 -P 0 -S 1 /dev/sda
    	echo "Next time you reboot, you will boot into ChromeOS"
+	fi
 	
 elif [ "$1" = $FUCKING_SAMSUNG_SHIT ]
 then
@@ -70,15 +75,9 @@ then
 	mkdir /etc/fssind
 	echo "Please remember to run this in Ubuntu and Chrome OS BOTH!"
 	echo "From now on, U-Boot will operate in Samsung-Compatible mode."
-	
 
 elif [ "$1" = $HELP ]
 then
-	echo "U-Boot Configuration Utility 1.2"
-	echo "INTERNAL RELEASE ONLY"
-	echo "================================================"
-    echo "Designed by Alan Xenos and the Domisy Dev Team"
-    echo "================================================"
     echo "uboot-set is a utility to set bootloader flags on Chrome OS devices"
     echo "Usage: uboot-set [flag]"
     echo "Flags to set bootloader:"
@@ -88,8 +87,10 @@ then
 	echo "Internal Operations"
 	echo "[install] to install new binary/update binary"
 	echo "[chromeinstall] to install to Chrome partition  -FOR FUTURE USE!"
+	echo "[ramtest] to test the integrated ramdisk tool"
 	echo "[help] to display this screen"
-        echo "[developer] to print developer build information"
+	echo "[developer] to print developer build information"
+	
 elif [ "$1" = $DEV ]
 then 
         echo "Unique Build ID: AFI1309I"
